@@ -7,6 +7,7 @@ Utilities
 from __future__ import absolute_import, division
 
 import copy
+import logging
 from sqlalchemy import inspect
 from sqlalchemy.ext.associationproxy import _AssociationList
 
@@ -122,7 +123,8 @@ def asdict(model, exclude=None, exclude_underscore=None, exclude_pk=None,
         try:
             rel = getattr(model, rel_key)
         except AttributeError:
-            raise errors.MissingRelationError(rel_key)
+            logging.error("Missing relation error: %s" % (rel_key))
+            continue
 
         args = copy.deepcopy(orig_args)
         method = args.pop('method', method)
